@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Antrian;
 import com.example.demo.entity.History;
-import com.example.demo.entity.antrian.GetAntrianListOutput;
+import com.example.demo.entity.antrian.response.GetAntrianListOutput;
 import com.example.demo.entity.antrian.request.PostAntrianRequest;
 import com.example.demo.entity.antrian.response.PostAntrianResponse;
 import com.example.demo.exception.CommonException;
@@ -10,7 +10,7 @@ import com.example.demo.exception.CustomArgsException;
 import com.example.demo.repository.*;
 import com.example.demo.response.BaseResponse;
 import com.example.demo.response.ErrorSchema;
-import com.example.demo.response.PostAntrianOutput;
+import com.example.demo.entity.antrian.response.PostAntrianOutput;
 import com.example.demo.util.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

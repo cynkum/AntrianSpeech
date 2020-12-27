@@ -1,23 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Antrian;
-import com.example.demo.entity.Pegawai;
-import com.example.demo.entity.antrian.GetAntrianListOutput;
+import com.example.demo.entity.antrian.response.GetAntrianListOutput;
 import com.example.demo.entity.antrian.request.PostAntrianRequest;
-import com.example.demo.entity.pegawai.GetPegawaiListOutput;
-import com.example.demo.entity.pegawai.GetUserInfo;
-import com.example.demo.entity.pegawai.LoginUserRequest;
 import com.example.demo.response.BaseResponse;
-import com.example.demo.response.PostAntrianOutput;
+import com.example.demo.entity.antrian.response.PostAntrianOutput;
 import com.example.demo.service.AntrianService;
-import com.example.demo.service.PegawaiService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @RestController
 @RequestMapping("/antrian")

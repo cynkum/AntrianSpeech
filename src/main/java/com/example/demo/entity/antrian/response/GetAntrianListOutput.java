@@ -1,4 +1,4 @@
-package com.example.demo.entity.antrian;
+package com.example.demo.entity.antrian.response;
 
 import com.example.demo.response.ErrorSchema;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
