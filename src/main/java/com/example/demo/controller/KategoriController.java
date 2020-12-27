@@ -25,8 +25,10 @@ public class KategoriController {
             @ApiParam(value = "Silakan isi ID cabang bank", required = true)
             @RequestParam String idCabang,
             @ApiParam(value = "Silakan isi jenis antrian", required = true)
-            @RequestParam String jenisAntrian) throws Exception {
-        return kategoriService.postKategori(idKategori, idCabang, jenisAntrian);
+            @RequestParam String jenisAntrian,
+            @ApiParam(value = "Silakan isi kode kategori", required = true)
+            @RequestParam String kodeKategori) throws Exception {
+        return kategoriService.postKategori(idKategori, idCabang, jenisAntrian, kodeKategori);
     }
 
     @GetMapping("{id-cabang}")
@@ -41,8 +43,8 @@ public class KategoriController {
         return kategoriService.getAllKategori();
     }
     @PutMapping("/{id-kategori}")
-    public BaseResponse updateKategori(String idKategori, String idCabang, String jenisAntrian){
-        return kategoriService.updateKategori(idKategori,idCabang, jenisAntrian);
+    public BaseResponse updateKategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori){
+        return kategoriService.updateKategori(idKategori,idCabang, jenisAntrian, kodeKategori);
     }
 
     @DeleteMapping("{id-kategori}")

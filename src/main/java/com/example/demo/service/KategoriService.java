@@ -27,7 +27,7 @@ public class KategoriService {
     @Autowired
     ErrorMessageRepository errorMessageRepository;
 
-    public BaseResponse postKategori(String idKategori, String idCabang, String jenisAntrian) throws Exception{
+    public BaseResponse postKategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori) throws Exception{
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         Kategori kategori = new Kategori();
@@ -48,6 +48,7 @@ public class KategoriService {
             kategori.setIdKategori(idKategori);
             kategori.setIdCabang(idCabang);
             kategori.setJenisAntrian(jenisAntrian);
+            kategori.setKodeKategori(kodeKategori);
             kategoriRepository.save(kategori);
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);
@@ -87,6 +88,7 @@ public class KategoriService {
                 kategoriView.setIdKategori(kategori.getIdKategori());
                 kategoriView.setIdCabang(kategori.getIdCabang());
                 kategoriView.setJenisAntrian(kategori.getJenisAntrian());
+                kategoriView.setKodeKategori(kategori.getKodeKategori());
                 kategoriViewList.add(kategoriView);
             }
             getKategoriListResponse.setKategoriList(kategoriViewList);
@@ -104,7 +106,7 @@ public class KategoriService {
         }
         return response;
     }
-    public BaseResponse updateKategori(String idKategori, String idCabang, String jenisAntrian){
+    public BaseResponse updateKategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori){
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         Kategori kategori = kategoriRepository.findById(idKategori).get();
@@ -114,6 +116,7 @@ public class KategoriService {
             }
             kategori.setIdCabang(idCabang);
             kategori.setJenisAntrian(jenisAntrian);
+            kategori.setKodeKategori(kodeKategori);
             kategoriRepository.save(kategori);
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);

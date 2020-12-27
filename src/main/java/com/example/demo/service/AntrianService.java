@@ -1,33 +1,24 @@
 package com.example.demo.service;
 
-import android.speech.SpeechRecognizer;
 import com.example.demo.entity.Antrian;
-import com.example.demo.entity.Pegawai;
+import com.example.demo.entity.History;
 import com.example.demo.entity.antrian.GetAntrianListOutput;
-import com.example.demo.entity.pegawai.GetPegawaiListOutput;
+import com.example.demo.entity.antrian.request.PostAntrianRequest;
+import com.example.demo.entity.antrian.response.PostAntrianResponse;
 import com.example.demo.exception.CommonException;
 import com.example.demo.exception.CustomArgsException;
-import com.example.demo.repository.AntrianRepository;
-import com.example.demo.repository.ErrorMessageRepository;
-import com.example.demo.repository.KategoriRepository;
-import com.example.demo.repository.PegawaiRepository;
+import com.example.demo.repository.*;
 import com.example.demo.response.BaseResponse;
 import com.example.demo.response.ErrorSchema;
+import com.example.demo.response.PostAntrianOutput;
 import com.example.demo.util.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.core.env.Environment;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.metamodel.Metamodel;
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
+//@Log4j2
 @Service
 public class AntrianService {
     @Autowired
@@ -37,63 +28,94 @@ public class AntrianService {
     @Autowired
     PegawaiRepository pegawaiRepository;
     @Autowired
+    HistoryRepository historyRepository;
+    @Autowired
     MessageUtils messageUtils;
     @Autowired
     ErrorMessageRepository errorMessageRepository;
+    @Autowired
+    private Environment env;
 
-    private SpeechRecognizer speechRecognizer;
-
-    public BaseResponse postAntrian(String idKategori, String nomorAntrian, String namaNasabah, String tanggalAntri, String statusAntrian) throws Exception{
-        BaseResponse response = new BaseResponse();
+    public PostAntrianOutput postAntrian(PostAntrianRequest request) throws Exception{
+        PostAntrianOutput postOutput = new PostAntrianOutput();
         ErrorSchema errorSchema = new ErrorSchema();
         Antrian antrian = new Antrian();
-        //GetPegawaiListOutput.PegawaiView pegawai = new GetPegawaiListOutput.PegawaiView();
+        PostAntrianResponse postResponse = new PostAntrianResponse();
         String nip = null;
         //di website pegawai manggil nasabah baru nip keisi/update nip
-
-        int idAntrian;
+        String nomorAntrian = null;
         try {
-            if(idKategori==null){
+            if(request.getIdKategori()==null){
                 throw new CustomArgsException("699.not_empty", "idKategori");
             }
             //List<Cabang> cabangList=cabangRepository.findAllByIdCabang(idCabang);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-            antrian.setIdKategori(idKategori);
-            antrian.setNomorAntrian(nomorAntrian);
-            antrian.setNamaNasabah(namaNasabah);
-            antrian.setTanggalAntri(sdf.parse(tanggalAntri));
-            antrian.setStatusAntrian(statusAntrian);
+            Long nomorAntrianLast=antrianRepository.findAllByNomorAntrian(request.getIdKategori());
+            String nomor= String.valueOf(nomorAntrianLast+1);
+            int nomorAntri2 = nomor.length();
+            int length;
+            int jmlKategori = 0;
+            for (int i = 0; i < 3 - nomorAntri2; i++) {
+                nomor = "0" + nomor;
+            }
+            if (request.getIdKategori().equals("1")) {
+                nomor = "A" +nomor;
+                antrian.setNomorAntrian(nomor);
+            } else if (request.getIdKategori().equals("2")) {
+                nomor = "B" +nomor;
+                antrian.setNomorAntrian(nomor);
+            } else if (request.getIdKategori().equals("3")) {
+                nomor = "C" +nomor;
+                antrian.setNomorAntrian(nomor);
+            } else if (request.getIdKategori().equals("4")) {
+                nomor = "D" +nomor;
+                antrian.setNomorAntrian(nomor);
+            } else {
+                antrian.setNomorAntrian("tidak terdaftar");
+            }
+//            log.debug(nomor);
+//            log.debug(nomorAntri2);
+
+            antrian.setIdKategori(request.getIdKategori());
+            antrian.setNamaNasabah(request.getNamaNasabah());
+            antrian.setTanggalAntri(sdf.parse(request.getTanggalAntri()));
+            antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
+            List<Antrian> antrianList = antrianRepository.findByNamaNasabahAndTanggalAntri(request.getNamaNasabah(), sdf.parse(request.getTanggalAntri()));
             errorSchema.setSuccessResponse();
-            response.setErrorSchema(errorSchema);
+            postOutput.setErrorSchema(errorSchema);
+            postOutput.setPostAntrianResp(postResponse);
         } catch (CommonException e) {
             e.printStackTrace();
             errorSchema.setResponse(messageUtils.setResponseCustomException(e));
-            response.setErrorSchema(errorSchema);
+            postOutput.setErrorSchema(errorSchema);
         } catch (Exception e) {
             Object[] args = new Object[]{"Post Antrian"};
             errorSchema.setResponse(messageUtils.setResponse(e.getMessage(), args));
-            response.setErrorSchema(errorSchema);
+            postOutput.setErrorSchema(errorSchema);
         }
-        return response;
+        return postOutput;
     }
 
     public Iterable<Antrian> getAllAntrian(){
         return antrianRepository.findAll();
     }
 
+    public Long getNomorAntrian(String id_kategori) {
+        return antrianRepository.findAllByNomorAntrian(id_kategori);
+    }
 
     public GetAntrianListOutput getAntrianByKategori (String idKategori){
         List<Antrian> antrianList;
+        //Log.d("getData", idKategori);
         List<GetAntrianListOutput.AntrianView> antrianViewList=new ArrayList<>();
         GetAntrianListOutput response = new GetAntrianListOutput();
         GetAntrianListOutput.GetAntrianListResponse getAntrianListResponse=new GetAntrianListOutput.GetAntrianListResponse();
         ErrorSchema errorSchema= new ErrorSchema();
         try{
             if(idKategori==null){
-                throw new CustomArgsException("699.not_empty", "idKategori");
             }
 //            if(!antrianRepository.existByIdKategori(idKategori)){
 //                throw new CustomArgsException("699.not_valid", "idKategori");
@@ -152,9 +174,11 @@ public class AntrianService {
 
     public BaseResponse deleteAntrian(int idAntrian){
         Antrian antrian = new Antrian();
+        History history = new History();
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         try{
+            
             if(!antrianRepository.existsById(idAntrian)){
                 throw new CustomArgsException("699.not_empty", "idKategori");
             }
@@ -172,4 +196,5 @@ public class AntrianService {
         }
         return response;
     }
+
 }

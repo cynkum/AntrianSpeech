@@ -28,11 +28,14 @@ public class Kategori {
     @NotNull
     @Column(name = "jenis_antrian")
     private String jenisAntrian;
+    @Column(name = "kode_kategori")
+    private String kodeKategori;
 
-    public Kategori(String idKategori, String idCabang, String jenisAntrian){
+    public Kategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori){
         this.idKategori = idKategori;
         this.idCabang = idCabang;
         this.jenisAntrian = jenisAntrian;
+        this.kodeKategori = kodeKategori;
     }
 
     public Kategori() {

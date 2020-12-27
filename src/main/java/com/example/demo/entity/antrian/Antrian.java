@@ -7,13 +7,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "antrian")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Data
 @Getter

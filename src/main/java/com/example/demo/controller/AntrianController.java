@@ -3,10 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.entity.Antrian;
 import com.example.demo.entity.Pegawai;
 import com.example.demo.entity.antrian.GetAntrianListOutput;
+import com.example.demo.entity.antrian.request.PostAntrianRequest;
 import com.example.demo.entity.pegawai.GetPegawaiListOutput;
 import com.example.demo.entity.pegawai.GetUserInfo;
 import com.example.demo.entity.pegawai.LoginUserRequest;
 import com.example.demo.response.BaseResponse;
+import com.example.demo.response.PostAntrianOutput;
 import com.example.demo.service.AntrianService;
 import com.example.demo.service.PegawaiService;
 import io.swagger.annotations.ApiOperation;
@@ -18,47 +20,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @RestController
+@RequestMapping("/antrian")
 @Component
 public class AntrianController {
     @Autowired
     private AntrianService antrianService;
 
-    @PostMapping("/antrian/add")
+    @PostMapping
     @ApiOperation(value = "Tambah antrian cabang")
-    public BaseResponse postAntrian(
-            @ApiParam(value = "Silakan isi ID Kategori", required = true)
-            @RequestParam String idKategori,
-            @ApiParam(value = "Silakan isi nomor antrian", required = true)
-            @RequestParam String nomorAntrian,
-            @ApiParam(value = "Silakan isi nama nasabah", required = true)
-            @RequestParam String namaNasabah,
-            @ApiParam(value = "Silakan isi tanggal antri", required = true)
-            @RequestParam String tanggalAntri,
-            @ApiParam(value = "Silakan isi status antrian", required = true)
-            @RequestParam String statusAntrian) throws Exception {
-        return antrianService.postAntrian(idKategori, nomorAntrian, namaNasabah, tanggalAntri, statusAntrian);
+    public PostAntrianOutput postAntrian(@RequestBody PostAntrianRequest request) throws Exception {
+        PostAntrianOutput postAntrianOutput = antrianService.postAntrian(request);
+        return postAntrianOutput;
     }
 
-    @GetMapping("/antrian/{id-cabang}")
+    @GetMapping("/{id-kategori}")
     @ApiOperation(value = "Daftar antrian sesuai kategori antrian")
     public GetAntrianListOutput getAntrianbyKategori(String idKategori){
         return antrianService.getAntrianByKategori(idKategori);
     }
 
-    @PutMapping("/antrian/{id-antrian}")
+    @PutMapping("/{id-antrian}")
     public BaseResponse updateStatus(int idAntrian, String statusAntrian){
         return antrianService.updateAntrianStatus(idAntrian, statusAntrian);
     }
 
-    @DeleteMapping("/antrian/{id-antrian}")
+    @DeleteMapping("/{id-antrian}")
     public BaseResponse deleteAntrian(int idAntrian){
         return antrianService.deleteAntrian(idAntrian);
     }
 
-    @GetMapping("/antrian/all")
+    @GetMapping("/all")
     @ApiOperation(value = "Daftar semua antrian")
     public Iterable<Antrian> getAllAntrian(){
         return antrianService.getAllAntrian();
+    }
+
+    @GetMapping("/{nomor-antri}")
+    @ApiOperation(value = "Daftar nomor antrian")
+    public Long getNomorAntrian(String id_kategori){
+        return antrianService.getNomorAntrian(id_kategori);
     }
 
     //------------------------------------------------------
