@@ -10,7 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "antrian")
+@Entity
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Data
 @Getter
