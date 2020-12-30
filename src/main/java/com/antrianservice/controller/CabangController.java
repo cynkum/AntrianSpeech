@@ -1,5 +1,8 @@
 package com.antrianservice.controller;
 
+import com.antrianservice.entity.cabang.request.PostCabangRequest;
+import com.antrianservice.entity.cabang.request.PutCabangRequest;
+import com.antrianservice.entity.cabang.response.GetCabangListOutput;
 import com.antrianservice.model.Cabang;
 import com.antrianservice.response.BaseResponse;
 import com.antrianservice.service.CabangService;
@@ -17,29 +20,25 @@ public class CabangController {
     @Autowired
     private CabangService cabangService;
 
-    @PostMapping("/add")
+    @PostMapping()
     @ApiOperation(value = "Tambah cabang bank")
-    public BaseResponse postCabang(
-            @ApiParam(value = "Silakan isi ID cabang bank", required = true)
-            @RequestParam String idCabang,
-            @ApiParam(value = "Silakan isi nama cabang bank", required = true)
-            @RequestParam String namaCabang) throws Exception {
-        return cabangService.postCabang(idCabang, namaCabang);
+    public BaseResponse postCabang(@RequestBody PostCabangRequest request) throws Exception {
+        return cabangService.postCabang(request);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @ApiOperation(value = "Daftar semua cabang bank terdaftar")
-    public Iterable<Cabang> getAllCabang(){
-        return cabangService.getAllCabang();
+    public GetCabangListOutput getCabangListOutput(){
+        return cabangService.getCabangListOutput();
     }
 
     @PutMapping("/{id-cabang}")
-    public BaseResponse updateCabang(String idCabang, String namaCabang){
-        return cabangService.updateCabang(idCabang, namaCabang);
+    public BaseResponse updateCabang(@PathVariable(value="id-cabang") String idCabang, @RequestBody PutCabangRequest request){
+        return cabangService.updateCabang(idCabang, request);
     }
 
-    @DeleteMapping("{id-cabang}")
-    public BaseResponse deleteCabang(String idCabang){
+    @DeleteMapping("/{id-cabang}")
+    public BaseResponse deleteCabang(@PathVariable("id-cabang") String idCabang){
         return cabangService.deleteCabang(idCabang);
     }
 

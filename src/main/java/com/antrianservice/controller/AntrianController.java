@@ -1,7 +1,9 @@
 package com.antrianservice.controller;
 
+import com.antrianservice.entity.antrian.request.PutAntrianRequest;
 import com.antrianservice.entity.antrian.response.GetAntrianListOutput;
 import com.antrianservice.entity.antrian.response.PostAntrianOutput;
+import com.antrianservice.entity.cabang.response.GetCabangListOutput;
 import com.antrianservice.model.Antrian;
 import com.antrianservice.entity.antrian.request.PostAntrianRequest;
 import com.antrianservice.response.BaseResponse;
@@ -32,19 +34,19 @@ public class AntrianController {
     }
 
     @PutMapping("/{id-antrian}")
-    public BaseResponse updateStatus(int idAntrian, String statusAntrian){
-        return antrianService.updateAntrianStatus(idAntrian, statusAntrian);
+    public BaseResponse updateStatus(@PathVariable(value = "id-antrian") int idAntrian, @RequestBody PutAntrianRequest request){
+        return antrianService.updateAntrian(idAntrian, request);
     }
 
     @DeleteMapping("/{id-antrian}")
-    public BaseResponse deleteAntrian(int idAntrian){
+    public BaseResponse deleteAntrian(@PathVariable(value = "id-antrian") int idAntrian){
         return antrianService.deleteAntrian(idAntrian);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @ApiOperation(value = "Daftar semua antrian")
-    public Iterable<Antrian> getAllAntrian(){
-        return antrianService.getAllAntrian();
+    public GetAntrianListOutput getAntrianListOutput(){
+        return antrianService.getAntrianListOutput();
     }
 
     @GetMapping("/{nomor-antri}")

@@ -1,4 +1,4 @@
-package com.antrianservice.entity.kategori;
+package com.antrianservice.entity.kategori.response;
 
 import com.antrianservice.response.ErrorSchema;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;

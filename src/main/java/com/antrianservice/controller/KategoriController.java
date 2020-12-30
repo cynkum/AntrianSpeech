@@ -1,6 +1,9 @@
 package com.antrianservice.controller;
 
-import com.antrianservice.entity.kategori.GetKategoriListOutput;
+import com.antrianservice.entity.kategori.request.PostKategoriRequest;
+import com.antrianservice.entity.kategori.request.PutKategoriRequest;
+import com.antrianservice.entity.kategori.response.GetKategoriListOutput;
+import com.antrianservice.entity.kategori.response.PostKategoriOutput;
 import com.antrianservice.model.Kategori;
 import com.antrianservice.response.BaseResponse;
 import com.antrianservice.service.KategoriService;
@@ -17,38 +20,31 @@ public class KategoriController {
     @Autowired
     private KategoriService kategoriService;
 
-    @PostMapping("/add")
+    @PostMapping()
     @ApiOperation(value = "Tambah kategori antrian")
-    public BaseResponse postCabang(
-            @ApiParam(value = "Silakan isi ID kategori antrian", required = true)
-            @RequestParam String idKategori,
-            @ApiParam(value = "Silakan isi ID cabang bank", required = true)
-            @RequestParam String idCabang,
-            @ApiParam(value = "Silakan isi jenis antrian", required = true)
-            @RequestParam String jenisAntrian,
-            @ApiParam(value = "Silakan isi kode kategori", required = true)
-            @RequestParam String kodeKategori) throws Exception {
-        return kategoriService.postKategori(idKategori, idCabang, jenisAntrian, kodeKategori);
+    public PostKategoriOutput postKategori(@RequestBody PostKategoriRequest request) throws Exception {
+        return kategoriService.postKategori(request);
     }
 
-    @GetMapping("{id-cabang}")
+    @GetMapping("/{id-cabang}")
     @ApiOperation(value = "Daftar semua kategori sesuai cabang")
-    public GetKategoriListOutput getKategoriByIdCabang(String idCabang){
+    public GetKategoriListOutput getKategoriByIdCabang(@PathVariable(value = "id-cabang") String idCabang){
         return kategoriService.getKategoriByIdCabang(idCabang);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @ApiOperation(value = "Daftar semua kategori")
-    public Iterable<Kategori> getAllKategori(){
-        return kategoriService.getAllKategori();
-    }
-    @PutMapping("/{id-kategori}")
-    public BaseResponse updateKategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori){
-        return kategoriService.updateKategori(idKategori,idCabang, jenisAntrian, kodeKategori);
+    public GetKategoriListOutput getKategoriListOutput(){
+        return kategoriService.getKategoriListOutput();
     }
 
-    @DeleteMapping("{id-kategori}")
-    public BaseResponse deleteKategori(String idKategori){
+    @PutMapping("/{id-kategori}")
+    public BaseResponse updateKategori(@PathVariable(value = "id-kategori") String idKategori, @RequestBody PutKategoriRequest request){
+        return kategoriService.updateKategori(idKategori,request);
+    }
+
+    @DeleteMapping("/{id-kategori}")
+    public BaseResponse deleteKategori(@PathVariable(value = "id-kategori") String idKategori){
         return kategoriService.deleteKategori(idKategori);
     }
 

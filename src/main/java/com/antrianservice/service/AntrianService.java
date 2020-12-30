@@ -1,5 +1,6 @@
 package com.antrianservice.service;
 
+import com.antrianservice.entity.antrian.request.PutAntrianRequest;
 import com.antrianservice.model.History;
 import com.antrianservice.model.Antrian;
 import com.antrianservice.entity.antrian.response.GetAntrianListOutput;
@@ -137,15 +138,7 @@ public class AntrianService {
         return postOutput;
     }
 
-    public Iterable<Antrian> getAllAntrian(){
-        return antrianRepository.findAll();
-    }
-
-    public Long getNomorAntrian(String id_kategori) {
-        return antrianRepository.findAllByNomorAntrian(id_kategori);
-    }
-
-    public GetAntrianListOutput getAntrianByKategori (String idKategori){
+    public GetAntrianListOutput getAntrianListOutput (){
         List<Antrian> antrianList;
         //Log.d("getData", idKategori);
         List<GetAntrianListOutput.AntrianView> antrianViewList=new ArrayList<>();
@@ -153,13 +146,7 @@ public class AntrianService {
         GetAntrianListOutput.GetAntrianListResponse getAntrianListResponse=new GetAntrianListOutput.GetAntrianListResponse();
         ErrorSchema errorSchema= new ErrorSchema();
         try{
-            if(idKategori==null){
-            }
-//            if(!antrianRepository.existByIdKategori(idKategori)){
-//                throw new CustomArgsException("699.not_valid", "idKategori");
-//            }
-            antrianList = antrianRepository.findAllByIdKategori(idKategori);
-            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            antrianList = antrianRepository.findAll();
             for(Antrian antrian : antrianList){
                 GetAntrianListOutput.AntrianView antrianView = new GetAntrianListOutput.AntrianView();
                 antrianView.setIdAntrian(antrian.getIdAntrian());
@@ -186,7 +173,51 @@ public class AntrianService {
         }
         return response;
     }
-    public BaseResponse updateAntrianStatus(int idAntrian, String statusAntrian){
+
+    public Long getNomorAntrian(String id_kategori) {
+        return antrianRepository.findAllByNomorAntrian(id_kategori);
+    }
+
+    public GetAntrianListOutput getAntrianByKategori (String idKategori){
+        List<Antrian> antrianList;
+        //Log.d("getData", idKategori);
+        List<GetAntrianListOutput.AntrianView> antrianViewList=new ArrayList<>();
+        GetAntrianListOutput response = new GetAntrianListOutput();
+        GetAntrianListOutput.GetAntrianListResponse getAntrianListResponse=new GetAntrianListOutput.GetAntrianListResponse();
+        ErrorSchema errorSchema= new ErrorSchema();
+        try{
+            if(idKategori==null){
+            }
+            antrianList = antrianRepository.findAllByIdKategori(idKategori);
+
+            for(Antrian antrian : antrianList){
+                GetAntrianListOutput.AntrianView antrianView = new GetAntrianListOutput.AntrianView();
+                antrianView.setIdAntrian(antrian.getIdAntrian());
+                antrianView.setIdKategori(antrian.getIdKategori());
+                antrianView.setNip(antrian.getNip());
+                antrianView.setNomorAntrian(antrian.getNomorAntrian());
+                antrianView.setNamaNasabah(antrian.getNamaNasabah());
+                antrianView.setTanggalAntri(antrian.getTanggalAntri());
+                antrianView.setStatusAntrian(antrian.getStatusAntrian());
+                antrianViewList.add(antrianView);
+            }
+            getAntrianListResponse.setAntrianView(antrianViewList);
+            response.setOutputSchema(getAntrianListResponse);
+            errorSchema.setSuccessResponse();
+            response.setErrorSchema(errorSchema);
+        } catch(CommonException e){
+            e.printStackTrace();
+            errorSchema.setResponse(messageUtils.setResponseCustomException(e));
+            response.setErrorSchema(errorSchema);
+        } catch(Exception e){
+            Object[] args = new Object[]{"Get Antrian by Id Kategori"};
+            errorSchema.setResponse(messageUtils.setResponse(e.getMessage(), args));
+            response.setErrorSchema(errorSchema);
+        }
+        return response;
+    }
+
+    public BaseResponse updateAntrian(int idAntrian, PutAntrianRequest request){
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         Antrian antrian = antrianRepository.findById(idAntrian).get();
@@ -194,7 +225,8 @@ public class AntrianService {
             if(!antrianRepository.existsById(idAntrian)){
                 throw new CustomArgsException("699.not_valid", "idKategori");
             }
-            antrian.setStatusAntrian(statusAntrian);
+            antrian.setNip(request.getNip());
+            antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);
@@ -203,7 +235,7 @@ public class AntrianService {
             errorSchema.setResponse(messageUtils.setResponseCustomException(e));
             response.setErrorSchema(errorSchema);
         } catch (Exception e) {
-            Object[] args = new Object[]{"Put Antrian Status"};
+            Object[] args = new Object[]{"Put Antrian"};
             errorSchema.setResponse(messageUtils.setResponse(e.getMessage(), args));
             response.setErrorSchema(errorSchema);
         }

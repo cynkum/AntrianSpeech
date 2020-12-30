@@ -1,15 +1,13 @@
 package com.antrianservice.controller;
 
 import com.antrianservice.entity.pegawai.request.PostPegawaiRequest;
-import com.antrianservice.entity.pegawai.request.PutPegawaiReq;
-import com.antrianservice.model.Pegawai;
+import com.antrianservice.entity.pegawai.request.PutPegawaiRequest;
 import com.antrianservice.entity.pegawai.response.GetUserInfo;
 import com.antrianservice.entity.pegawai.response.GetPegawaiListOutput;
 import com.antrianservice.entity.pegawai.request.LoginUserRequest;
 import com.antrianservice.response.BaseResponse;
 import com.antrianservice.service.PegawaiService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,7 @@ public class PegawaiController {
     @Autowired
     private PegawaiService pegawaiService;
 
-    @PostMapping("/pegawai/add")
+    @PostMapping("/pegawai")
     @ApiOperation(value = "Tambah pegawai cabang")
     public BaseResponse postPegawai(@RequestBody PostPegawaiRequest request) throws Exception {
         return pegawaiService.postPegawai(request);
@@ -38,14 +36,14 @@ public class PegawaiController {
         return pegawaiService.getUserInfo(nip);
     }
 
-    @GetMapping("/pegawai/all")
+    @GetMapping("/pegawai")
     @ApiOperation(value = "Daftar semua kategori")
     public GetPegawaiListOutput getPegawaiListOutput(){
         return pegawaiService.getPegawaiListOutput();
     }
 
     @PutMapping("/pegawai/{nip}")
-    public BaseResponse updatePegawai(@PathVariable (value = "nip") String nip, @RequestBody PutPegawaiReq req){
+    public BaseResponse updatePegawai(@PathVariable (value = "nip") String nip, @RequestBody PutPegawaiRequest req){
         return pegawaiService.updatePegawai(nip,req);
     }
 

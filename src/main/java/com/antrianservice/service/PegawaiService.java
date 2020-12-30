@@ -1,7 +1,7 @@
 package com.antrianservice.service;
 
 import com.antrianservice.entity.pegawai.request.PostPegawaiRequest;
-import com.antrianservice.entity.pegawai.request.PutPegawaiReq;
+import com.antrianservice.entity.pegawai.request.PutPegawaiRequest;
 import com.antrianservice.entity.pegawai.response.GetUserInfo;
 import com.antrianservice.entity.pegawai.request.LoginUserRequest;
 import com.antrianservice.model.Pegawai;
@@ -210,7 +210,7 @@ public class PegawaiService {
         }
         return response;
     }
-    public BaseResponse updatePegawai(String nip,PutPegawaiReq req){
+    public BaseResponse updatePegawai(String nip, PutPegawaiRequest req){
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         Pegawai pegawai = pegawaiRepository.findById(nip).get();
