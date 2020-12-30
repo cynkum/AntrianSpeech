@@ -20,6 +20,7 @@ public class GetKategoriListOutput {
         private String idCabang;
         private String jenisAntrian;
         private String kodeKategori;
+        private String kodeSpeech;
     }
     @Data
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)

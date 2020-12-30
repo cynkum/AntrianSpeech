@@ -57,6 +57,7 @@ public class KategoriService {
             kategori.setIdCabang(request.getIdCabang());
             kategori.setJenisAntrian(request.getJenisAntrian());
             kategori.setKodeKategori(request.getKodeKategori());
+            kategori.setKodeSpeech(request.getKodeSpeech());
             kategoriRepository.save(kategori);
             List<Kategori> kategoriList = kategoriRepository.findByIdCabangAndAndKodeKategori(request.getIdCabang(), request.getKodeKategori());
             postResponse.setIdKategori(kategoriList.get(0).getIdKategori());
@@ -89,6 +90,7 @@ public class KategoriService {
                 kategoriView.setIdCabang(kategori.getIdCabang());
                 kategoriView.setJenisAntrian(kategori.getJenisAntrian());
                 kategoriView.setKodeKategori(kategori.getKodeKategori());
+                kategoriView.setKodeSpeech(kategori.getKodeSpeech());
                 kategoriViewList.add(kategoriView);
             }
             getKategoriListResponse.setKategoriList(kategoriViewList);
@@ -128,6 +130,7 @@ public class KategoriService {
                 kategoriView.setIdCabang(kategori.getIdCabang());
                 kategoriView.setJenisAntrian(kategori.getJenisAntrian());
                 kategoriView.setKodeKategori(kategori.getKodeKategori());
+                kategoriView.setKodeSpeech(kategori.getKodeSpeech());
                 kategoriViewList.add(kategoriView);
             }
             getKategoriListResponse.setKategoriList(kategoriViewList);
@@ -156,6 +159,7 @@ public class KategoriService {
             kategori.setIdCabang(request.getIdCabang());
             kategori.setJenisAntrian(request.getJenisAntrian());
             kategori.setKodeKategori(request.getKodeKategori());
+            kategori.setKodeSpeech(request.getKodeSpeech());
             kategoriRepository.save(kategori);
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);

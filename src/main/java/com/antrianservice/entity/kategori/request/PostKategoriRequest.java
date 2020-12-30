@@ -11,4 +11,5 @@ public class PostKategoriRequest {
     private String idCabang;
     private String jenisAntrian;
     private String kodeKategori;
+    private String kodeSpeech;
 }

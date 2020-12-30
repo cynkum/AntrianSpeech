@@ -10,4 +10,5 @@ public class PutKategoriRequest {
     private String idCabang;
     private String jenisAntrian;
     private String kodeKategori;
+    private String kodeSpeech;
 }

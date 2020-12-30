@@ -28,15 +28,15 @@ public class Kategori {
     private String jenisAntrian;
     @Column(name = "kode_kategori")
     private String kodeKategori;
-//    @Column(name = "kode_speech")
-//    private String kodeSpeech;
+    @Column(name = "kode_speech")
+    private String kodeSpeech;
 
     public Kategori(String idKategori, String idCabang, String jenisAntrian, String kodeKategori, String kodeSpeech){
         this.idKategori = idKategori;
         this.idCabang = idCabang;
         this.jenisAntrian = jenisAntrian;
         this.kodeKategori = kodeKategori;
-        //this.kodeSpeech = kodeSpeech;
+        this.kodeSpeech = kodeSpeech;
     }
 
     public Kategori() {
