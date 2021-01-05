@@ -1,6 +1,8 @@
 package com.antrianservice.service;
 
 import com.antrianservice.entity.antrian.request.PutAntrianRequest;
+import com.antrianservice.entity.kategori.response.GetKategoriListOutput;
+import com.antrianservice.model.Cabang;
 import com.antrianservice.model.History;
 import com.antrianservice.model.Antrian;
 import com.antrianservice.entity.antrian.response.GetAntrianListOutput;
@@ -8,6 +10,7 @@ import com.antrianservice.entity.antrian.response.PostAntrianOutput;
 import com.antrianservice.entity.antrian.response.PostAntrianResponse;
 import com.antrianservice.exception.CommonException;
 import com.antrianservice.exception.CustomArgsException;
+import com.antrianservice.model.Kategori;
 import com.antrianservice.repository.*;
 import com.antrianservice.response.ErrorSchema;
 import com.antrianservice.util.MessageUtils;
@@ -36,92 +39,43 @@ public class AntrianService {
     MessageUtils messageUtils;
     @Autowired
     ErrorMessageRepository errorMessageRepository;
-    @Autowired
-    private Environment env;
 
     public PostAntrianOutput postAntrian(PostAntrianRequest request) throws Exception{
         PostAntrianOutput postOutput = new PostAntrianOutput();
         ErrorSchema errorSchema = new ErrorSchema();
         Antrian antrian = new Antrian();
+        Cabang cabang = new Cabang();
+        Kategori kategori = new Kategori();
         PostAntrianResponse postResponse = new PostAntrianResponse();
+        KategoriService kategoriService = new KategoriService();
+
+        //GetKategoriListOutput kategoriCabang = kategoriService.getKategoriByIdCabang("BCA001");
+        List<Kategori> kategoriList = kategoriRepository.findAllByIdCabang(request.getIdCabang());
+
         //di website pegawai manggil nasabah baru nip keisi/update nip
         try {
-            if(request.getIdKategori()==null){
-                throw new CustomArgsException("699.not_empty", "idKategori");
+            if(!kategoriRepository.existsById(request.getIdKategori())){
+                throw new CustomArgsException("699.not_valid", "idKategori");
             }
-
+            if(!kategoriRepository.findIdKategori(request.getIdCabang()).contains(request.getIdKategori())){
+                throw new CustomArgsException("699.not_valid", "idKategori");
+            }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Long jmlKategori = kategoriRepository.countKategoriByIdCabang(request.getIdCabang());
-            Long nomorAntrianLast=antrianRepository.findAllByNomorAntrian(request.getIdKategori());
-            String nomor= String.valueOf(nomorAntrianLast+1);
-            int nomorAntri2 = nomor.length();
-
-            if(jmlKategori==0) {
-                throw new CustomArgsException("699.not_empty", "");
-            }
-            String number = String.format("%3s", nomor).replace(" ", "0");
-                if (jmlKategori == 1) {
-                    number = "A" + number;
-                } else if (jmlKategori == 2) {
-                    if (request.getIdKategori().equals("1")) {
-                        number = "A" + number;
-                    } else {
-                        number = "B" + number;
-                    }
-                } else if (jmlKategori == 3) {
-                    if (request.getIdKategori().equals("1")) {
-                        number = "A" + number;
-                    } else if (request.getIdKategori().equals("2")) {
-                        number = "B" + number;
-                    } else {
-                        number = "C" + number;
-                    }
-                } else if (jmlKategori == 4) {
-                    if (request.getIdKategori().equals("1")) {
-                        number = "A" + number;
-                        ;
-                    } else if (request.getIdKategori().equals("2")) {
-                        number = "B" + number;
-                    } else if (request.getIdKategori().equals("3")) {
-                        number = "C" + number;
-                    } else {
-                        number = "D" + number;
-                    }
-                } else if (jmlKategori == 5) {
-                    if (request.getIdKategori().equals("1")) {
-                        number = "A" + number;
-                    } else if (request.getIdKategori().equals("2")) {
-                        number = "B" + number;
-                    } else if (request.getIdKategori().equals("3")) {
-                        number = "C" + number;
-                    } else if (request.getIdKategori().equals("4")) {
-                        number = "D" + number;
-                    } else {
-                        number = "E" + number;
-                    }
-                } else if (jmlKategori == 6) {
-                    if (request.getIdKategori().equals("1")) {
-                        number = "A" + number;
-                    } else if (request.getIdKategori().equals("2")) {
-                        number = "B" + number;
-                    } else if (request.getIdKategori().equals("3")) {
-                        number = "C" + number;
-                    } else if (request.getIdKategori().equals("4")) {
-                        number = "D" + number;
-                    } else if (request.getIdKategori().equals("5")) {
-                        number = "E" + number;
-                    } else {
-                        number = "F" + number;
-                    }
-                }
-                antrian.setNomorAntrian(number);
-
             antrian.setIdKategori(request.getIdKategori());
+            for(Kategori kategori1 : kategoriList) {
+                Long nomorAntrianLast = antrianRepository.findAllByNomorAntrian(request.getIdKategori());
+                String nomor = String.valueOf(nomorAntrianLast + 1);
+                String number = String.format("%3s", nomor).replace(" ", "0");
+                String kodeKategori = kategoriRepository.findKodeKategori(request.getIdCabang(),request.getIdKategori());
+                String nomorAntrian = kodeKategori + number;
+                antrian.setNomorAntrian(nomorAntrian);
+            }
+
             antrian.setNamaNasabah(request.getNamaNasabah());
             antrian.setTanggalAntri(sdf.parse(request.getTanggalAntri()));
             antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
-            List<Antrian> antrianList = antrianRepository.findByNamaNasabahAndTanggalAntri(request.getNamaNasabah(), sdf.parse(request.getTanggalAntri()));
+            List<Antrian> antrianList = antrianRepository.findByNamaNasabahAndTanggalAntriAndIdKategori(request.getNamaNasabah(), sdf.parse(request.getTanggalAntri()), request.getIdKategori());
             postResponse.setIdAntrian(antrianList.get(0).getIdAntrian());
             errorSchema.setSuccessResponse();
             postOutput.setErrorSchema(errorSchema);
@@ -186,8 +140,6 @@ public class AntrianService {
         GetAntrianListOutput.GetAntrianListResponse getAntrianListResponse=new GetAntrianListOutput.GetAntrianListResponse();
         ErrorSchema errorSchema= new ErrorSchema();
         try{
-            if(idKategori==null){
-            }
             antrianList = antrianRepository.findAllByIdKategori(idKategori);
 
             for(Antrian antrian : antrianList){

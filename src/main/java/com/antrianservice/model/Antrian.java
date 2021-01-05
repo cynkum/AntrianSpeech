@@ -36,7 +36,6 @@ public class Antrian {
     @NotNull
     @Column(name = "status_antrian")
     private String statusAntrian;
-
 //    public void setTanggal(Date tanggalAntri) {
 //        this.tanggalAntri = tanggalAntri;
 //    }

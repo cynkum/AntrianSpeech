@@ -109,7 +109,6 @@ public class KategoriService {
         return response;
     }
 
-
     public GetKategoriListOutput getKategoriByIdCabang(String idCabang){
         List<Kategori> kategoriList;
         List<GetKategoriListOutput.KategoriView> kategoriViewList=new ArrayList<>();
@@ -148,6 +147,7 @@ public class KategoriService {
         }
         return response;
     }
+
     public BaseResponse updateKategori(String idKategori, PutKategoriRequest request){
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();

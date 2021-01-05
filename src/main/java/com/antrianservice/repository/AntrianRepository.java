@@ -14,6 +14,7 @@ public interface AntrianRepository extends CrudRepository<Antrian, Integer> {
     List<Antrian> findAllByIdKategori(String idKategori);
     @Query(value = "SELECT COUNT(*) max FROM antrian WHERE DATE(tanggal_antri) = CURDATE() AND id_kategori =?1", nativeQuery = true)
     Long findAllByNomorAntrian(String id_kategori);
-    List<Antrian> findByNamaNasabahAndTanggalAntri(String namaNasabah, Date tanggalAntri);
+
+    List<Antrian> findByNamaNasabahAndTanggalAntriAndIdKategori(String namaNasabah, Date tanggalAntri, String idKategori);
 
 }
