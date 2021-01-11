@@ -12,8 +12,6 @@ public class PostAntrianRequest {
     @NotBlank
     private String idKategori;
     @NotBlank
-    private String idCabang;
-    @NotBlank
     private String namaNasabah;
     @NotBlank
     private String tanggalAntri;

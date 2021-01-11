@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PostAntrianResponse {
-    private int idAntrian;
+    private String nomorAntrian;
 }

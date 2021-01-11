@@ -14,36 +14,35 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/kategori")
 @Component
 public class KategoriController {
     @Autowired
     private KategoriService kategoriService;
 
-    @PostMapping()
+    @PostMapping("/kategori")
     @ApiOperation(value = "Tambah kategori antrian")
     public PostKategoriOutput postKategori(@RequestBody PostKategoriRequest request) throws Exception {
         return kategoriService.postKategori(request);
     }
 
-    @GetMapping("/{id-cabang}")
+    @GetMapping("/kategori/{id-cabang}")
     @ApiOperation(value = "Daftar semua kategori sesuai cabang")
     public GetKategoriListOutput getKategoriByIdCabang(@PathVariable(value = "id-cabang") String idCabang){
         return kategoriService.getKategoriByIdCabang(idCabang);
     }
 
-    @GetMapping()
+    @GetMapping("/kategori")
     @ApiOperation(value = "Daftar semua kategori")
     public GetKategoriListOutput getKategoriListOutput(){
         return kategoriService.getKategoriListOutput();
     }
 
-    @PutMapping("/{id-kategori}")
+    @PutMapping("/kategori/{id-kategori}")
     public BaseResponse updateKategori(@PathVariable(value = "id-kategori") String idKategori, @RequestBody PutKategoriRequest request){
         return kategoriService.updateKategori(idKategori,request);
     }
 
-    @DeleteMapping("/{id-kategori}")
+    @DeleteMapping("/kategori/{id-kategori}")
     public BaseResponse deleteKategori(@PathVariable(value = "id-kategori") String idKategori){
         return kategoriService.deleteKategori(idKategori);
     }

@@ -49,34 +49,28 @@ public class AntrianService {
         PostAntrianResponse postResponse = new PostAntrianResponse();
         KategoriService kategoriService = new KategoriService();
 
-        //GetKategoriListOutput kategoriCabang = kategoriService.getKategoriByIdCabang("BCA001");
-        List<Kategori> kategoriList = kategoriRepository.findAllByIdCabang(request.getIdCabang());
-
         //di website pegawai manggil nasabah baru nip keisi/update nip
         try {
             if(!kategoriRepository.existsById(request.getIdKategori())){
                 throw new CustomArgsException("699.not_valid", "idKategori");
             }
-            if(!kategoriRepository.findIdKategori(request.getIdCabang()).contains(request.getIdKategori())){
-                throw new CustomArgsException("699.not_valid", "idKategori");
-            }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            antrian.setIdKategori(request.getIdKategori());
-            for(Kategori kategori1 : kategoriList) {
-                Long nomorAntrianLast = antrianRepository.findAllByNomorAntrian(request.getIdKategori());
-                String nomor = String.valueOf(nomorAntrianLast + 1);
-                String number = String.format("%3s", nomor).replace(" ", "0");
-                String kodeKategori = kategoriRepository.findKodeKategori(request.getIdCabang(),request.getIdKategori());
-                String nomorAntrian = kodeKategori + number;
-                antrian.setNomorAntrian(nomorAntrian);
-            }
 
+
+            Long nomorAntrianLast = antrianRepository.countAntrianByIdKategori(request.getIdKategori());
+            String nomor = String.valueOf(nomorAntrianLast + 1);
+            String number = String.format("%3s", nomor).replace(" ", "0");
+            String kodeKategori = kategoriRepository.findKodeKategori(request.getIdKategori());
+            String nomorAntrian = kodeKategori + number;
+
+            antrian.setIdKategori(request.getIdKategori());
+            antrian.setNomorAntrian(nomorAntrian);
             antrian.setNamaNasabah(request.getNamaNasabah());
             antrian.setTanggalAntri(sdf.parse(request.getTanggalAntri()));
             antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
-            List<Antrian> antrianList = antrianRepository.findByNamaNasabahAndTanggalAntriAndIdKategori(request.getNamaNasabah(), sdf.parse(request.getTanggalAntri()), request.getIdKategori());
-            postResponse.setIdAntrian(antrianList.get(0).getIdAntrian());
+
+            postResponse.setNomorAntrian(nomorAntrian);
             errorSchema.setSuccessResponse();
             postOutput.setErrorSchema(errorSchema);
             postOutput.setPostAntrianResp(postResponse);
@@ -129,7 +123,7 @@ public class AntrianService {
     }
 
     public Long getNomorAntrian(String id_kategori) {
-        return antrianRepository.findAllByNomorAntrian(id_kategori);
+        return antrianRepository.countAntrianByIdKategori(id_kategori);
     }
 
     public GetAntrianListOutput getAntrianByKategori (String idKategori){
