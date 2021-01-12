@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class PostKategoriRequest {
-    private String idKategori;
     private String idCabang;
     private String jenisAntrian;
     private String kodeKategori;

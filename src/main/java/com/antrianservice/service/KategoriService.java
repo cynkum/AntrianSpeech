@@ -37,12 +37,6 @@ public class KategoriService {
         ErrorSchema errorSchema = new ErrorSchema();
         Kategori kategori = new Kategori();
         try {
-            if(kategoriRepository.existsById(request.getIdKategori())){
-                throw new CustomArgsException("300", "id_kategori");
-            }
-            if(request.getIdKategori()==null){
-                throw new CustomArgsException("699.not_empty", "idKategori");
-            }
             if(request.getIdCabang()==null){
                 throw new CustomArgsException("699.not_empty", "idCabang");
             }
@@ -53,7 +47,10 @@ public class KategoriService {
                 throw new CustomArgsException("699.not_empty", "kodeKategori");
             }
             //List<Cabang> cabangList=cabangRepository.findAllByIdCabang(idCabang);
-            kategori.setIdKategori(request.getIdKategori());
+            Long idKategoriLast = kategoriRepository.countKategori();
+            String idKategoriNow = String.valueOf(idKategoriLast + 1);
+
+            kategori.setIdKategori(idKategoriNow);
             kategori.setIdCabang(request.getIdCabang());
             kategori.setJenisAntrian(request.getJenisAntrian());
             kategori.setKodeKategori(request.getKodeKategori());

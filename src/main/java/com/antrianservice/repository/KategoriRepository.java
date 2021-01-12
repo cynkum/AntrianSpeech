@@ -17,6 +17,9 @@ public interface KategoriRepository extends CrudRepository<Kategori, String> {
     @Query(value = "select kode_kategori from kategori_antrian where id_kategori=?1", nativeQuery = true)
     String findKodeKategori(String idKategori);
 
+    @Query(value = "SELECT COUNT(*) max FROM kategori_antrian", nativeQuery = true)
+    Long countKategori();
+
 //    @Query(countQuery = "SELECT COUNT(id_kategori) FROM kategori_antrian WHERE id_cabang = :id_cabang", nativeQuery = true)
 //    Long countKategoriByIdCabang(String idCabang);
 

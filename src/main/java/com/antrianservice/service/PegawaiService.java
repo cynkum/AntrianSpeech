@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -248,14 +249,23 @@ public class PegawaiService {
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         try {
-            if (!username.getPassword().equals(request.getPassword())) {
+            if (!username.getUsername().equals(request.getUsername())) {
+                throw new CustomArgsException("699.not_valid", "username");
+            }
+            MessageDigest md= MessageDigest.getInstance("MD5");
+            md.update(request.getPassword().getBytes());
+            byte[] digest = md.digest();
+            String passMd = DatatypeConverter.printHexBinary(digest).toUpperCase();
+            System.out.println(username.getPassword());
+            System.out.println(passMd);
+            if (!username.getPassword().equals(passMd)) {
                 throw new CustomArgsException("699.not_valid", "password");
             }
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);
-        }catch (CommonException e) {
+        }catch (CommonException | NoSuchAlgorithmException e) {
             e.printStackTrace();
-            errorSchema.setResponse(messageUtils.setResponseCustomException(e));
+            errorSchema.setResponse(messageUtils.setResponseCustomException((CommonException)e));
             response.setErrorSchema(errorSchema);
         }
         return response;

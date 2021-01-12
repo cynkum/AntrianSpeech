@@ -14,7 +14,5 @@ public class PostAntrianRequest {
     @NotBlank
     private String namaNasabah;
     @NotBlank
-    private String tanggalAntri;
-    @NotBlank
     private String statusAntrian;
 }

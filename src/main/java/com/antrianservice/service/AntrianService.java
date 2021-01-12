@@ -55,7 +55,12 @@ public class AntrianService {
                 throw new CustomArgsException("699.not_valid", "idKategori");
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            String strDate = sdf.format(cal.getTime());
 
+//            SimpleDateFormat sdf1 = new SimpleDateFormat();
+//            sdf1.applyPattern("dd/MM/yyyy HH:mm:ss.SS");
+//            Date date = sdf1.parse(strDate);
 
             Long nomorAntrianLast = antrianRepository.countAntrianByIdKategori(request.getIdKategori());
             String nomor = String.valueOf(nomorAntrianLast + 1);
@@ -66,7 +71,7 @@ public class AntrianService {
             antrian.setIdKategori(request.getIdKategori());
             antrian.setNomorAntrian(nomorAntrian);
             antrian.setNamaNasabah(request.getNamaNasabah());
-            antrian.setTanggalAntri(sdf.parse(request.getTanggalAntri()));
+            antrian.setTanggalAntri(sdf.parse(strDate));
             antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
 
