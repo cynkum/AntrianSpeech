@@ -245,24 +245,25 @@ public class PegawaiService {
     }
 
     public BaseResponse loginUser(LoginUserRequest request){
-        Pegawai username = pegawaiRepository.findByUsername(request.getUsername());
+        String password = pegawaiRepository.existsPegawaiByUsername(request.getUsername());
+        Pegawai pegawai = pegawaiRepository.findByUsername(request.getUsername());
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         try {
-            if (!username.getUsername().equals(request.getUsername())) {
+            if (pegawaiRepository.existsPegawaiByUsername(request.getUsername())==null) {
                 throw new CustomArgsException("699.not_valid", "username");
             }
             MessageDigest md= MessageDigest.getInstance("MD5");
             md.update(request.getPassword().getBytes());
             byte[] digest = md.digest();
             String passMd = DatatypeConverter.printHexBinary(digest).toUpperCase();
-            System.out.println(username.getPassword());
-            System.out.println(passMd);
-            if (!username.getPassword().equals(passMd)) {
+
+            if (!password.equals(passMd)) {
                 throw new CustomArgsException("699.not_valid", "password");
             }
             errorSchema.setSuccessResponse();
             response.setErrorSchema(errorSchema);
+
         }catch (CommonException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             errorSchema.setResponse(messageUtils.setResponseCustomException((CommonException)e));

@@ -1,6 +1,7 @@
 package com.antrianservice.repository;
 
 import com.antrianservice.model.Pegawai;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,10 @@ public interface PegawaiRepository extends CrudRepository<Pegawai, String> {
     List<Pegawai> findAllByNip(String nip);
     List<Pegawai> findAll();
     Pegawai findByUsername(String username);
+
+    @Query(value = "select password from pegawai where username=?1", nativeQuery = true)
+    String existsPegawaiByUsername(String username);
+
     Pegawai findByPassword(String password);
     Pegawai findByNip(String nip);
 //    List<Pegawai> findPassword(String password);

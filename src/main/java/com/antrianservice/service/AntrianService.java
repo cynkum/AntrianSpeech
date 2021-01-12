@@ -72,7 +72,7 @@ public class AntrianService {
             antrian.setNomorAntrian(nomorAntrian);
             antrian.setNamaNasabah(request.getNamaNasabah());
             antrian.setTanggalAntri(sdf.parse(strDate));
-            antrian.setStatusAntrian(request.getStatusAntrian());
+            antrian.setStatusAntrian("Menunggu dilayani");
             antrianRepository.save(antrian);
 
             postResponse.setNomorAntrian(nomorAntrian);
