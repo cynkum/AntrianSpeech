@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/antrian")
 @Component
 public class AntrianController {
     @Autowired
@@ -24,42 +23,42 @@ public class AntrianController {
     @Autowired
     private KategoriService kategoriService;
 
-    @PostMapping
+    @PostMapping("/antrian")
     @ApiOperation(value = "Tambah antrian cabang")
     public PostAntrianOutput postAntrian(@RequestBody PostAntrianRequest request) throws Exception {
         PostAntrianOutput postAntrianOutput = antrianService.postAntrian(request);
         return postAntrianOutput;
     }
 
-    @GetMapping("/{id-kategori}")
+    @GetMapping("/antrian/{id-kategori}")
     @ApiOperation(value = "Daftar antrian sesuai kategori antrian")
     public GetAntrianListOutput getAntrianbyKategori(String idKategori){
         return antrianService.getAntrianByKategori(idKategori);
     }
 
-    @PutMapping("/{id-antrian}")
+    @PutMapping("/antrian/{id-antrian}")
     public BaseResponse updateStatus(@PathVariable(value = "id-antrian") int idAntrian, @RequestBody PutAntrianRequest request){
         return antrianService.updateAntrian(idAntrian, request);
     }
 
-    @DeleteMapping("/{id-antrian}")
+    @DeleteMapping("/antrian/{id-antrian}")
     public BaseResponse deleteAntrian(@PathVariable(value = "id-antrian") int idAntrian){
         return antrianService.deleteAntrian(idAntrian);
     }
 
-    @GetMapping()
+    @GetMapping("/antrian")
     @ApiOperation(value = "Daftar semua antrian")
     public GetAntrianListOutput getAntrianListOutput(){
         return antrianService.getAntrianListOutput();
     }
 
-    @GetMapping("/{nomor-antri}")
+    @GetMapping("/{id-kategori}/antrian")
     @ApiOperation(value = "Daftar nomor antrian")
     public Long getNomorAntrian(String id_kategori){
         return antrianService.getNomorAntrian(id_kategori);
     }
 
-    @GetMapping("/{id-cabang}")
+    @GetMapping("/antrian/{id-cabang}")
     @ApiOperation("Daftar Kategori Sesuai Cabang")
     public GetKategoriListOutput getKategoriByIdCabang(String idCabang){
         return kategoriService.getKategoriByIdCabang(idCabang);

@@ -22,9 +22,6 @@ public class Antrian {
     @Column(name = "id_kategori")
     private String idKategori;
     @NotNull
-    @Column(name = "nip")
-    private String nip;
-    @NotNull
     @Column(name = "nomor_antrian")
     private String nomorAntrian;
     @NotNull

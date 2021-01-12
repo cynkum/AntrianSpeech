@@ -11,9 +11,10 @@ import java.util.List;
 @Repository
 public interface AntrianRepository extends CrudRepository<Antrian, Integer> {
     List<Antrian> findAll();
+    @Query(value = "SELECT * FROM antrian WHERE DATE(tanggal_antri) = CURDATE() AND id_kategori =?1", nativeQuery = true)
     List<Antrian> findAllByIdKategori(String idKategori);
     @Query(value = "SELECT COUNT(*) max FROM antrian WHERE DATE(tanggal_antri) = CURDATE() AND id_kategori =?1", nativeQuery = true)
-    Long countAntrianByIdKategori(String id_kategori);
+    Long countAntrianByIdKategori(String idkategori);
 
 
 }

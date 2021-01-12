@@ -104,7 +104,6 @@ public class AntrianService {
                 GetAntrianListOutput.AntrianView antrianView = new GetAntrianListOutput.AntrianView();
                 antrianView.setIdAntrian(antrian.getIdAntrian());
                 antrianView.setIdKategori(antrian.getIdKategori());
-                antrianView.setNip(antrian.getNip());
                 antrianView.setNomorAntrian(antrian.getNomorAntrian());
                 antrianView.setNamaNasabah(antrian.getNamaNasabah());
                 antrianView.setTanggalAntri(antrian.getTanggalAntri());
@@ -145,7 +144,6 @@ public class AntrianService {
                 GetAntrianListOutput.AntrianView antrianView = new GetAntrianListOutput.AntrianView();
                 antrianView.setIdAntrian(antrian.getIdAntrian());
                 antrianView.setIdKategori(antrian.getIdKategori());
-                antrianView.setNip(antrian.getNip());
                 antrianView.setNomorAntrian(antrian.getNomorAntrian());
                 antrianView.setNamaNasabah(antrian.getNamaNasabah());
                 antrianView.setTanggalAntri(antrian.getTanggalAntri());
@@ -176,7 +174,6 @@ public class AntrianService {
             if(!antrianRepository.existsById(idAntrian)){
                 throw new CustomArgsException("699.not_valid", "idKategori");
             }
-            antrian.setNip(request.getNip());
             antrian.setStatusAntrian(request.getStatusAntrian());
             antrianRepository.save(antrian);
             errorSchema.setSuccessResponse();
