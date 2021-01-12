@@ -34,16 +34,16 @@ public class CabangService {
         ErrorSchema errorSchema = new ErrorSchema();
         Cabang cabang = new Cabang();
         try {
-            if(cabangRepository.existsById(request.getIdCabang())){
-                throw new CustomArgsException("300", "idCabang");
-            }
-            if(request.getIdCabang()==null){
-                throw new CustomArgsException("699.not_empty", "idCabang");
-            }
             if(request.getNamaCabang()==null){
                 throw new CustomArgsException("699.not_empty", "namaNabang");
             }
-            cabang.setIdCabang(request.getIdCabang());
+            Long idCabangLast = cabangRepository.countCabang();
+            String idCabang = String.valueOf(idCabangLast + 1);
+            String idCabangFormat = String.format("%3s", idCabang).replace(" ", "0");
+            String kodeCabang = "BCA";
+            String idCabangNow = kodeCabang + idCabangFormat;
+
+            cabang.setIdCabang(idCabangNow);
             cabang.setNamaCabang(request.getNamaCabang());
             cabangRepository.save(cabang);
             errorSchema.setSuccessResponse();
