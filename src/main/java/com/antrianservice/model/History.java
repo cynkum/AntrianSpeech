@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "history")
@@ -18,14 +15,15 @@ import java.util.Date;
 @Data
 public class History {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_history", unique = true)
-    private String id_history;
+    private int idHistory;
     @NotNull
     @Column(name = "nip")
     private String nip;
     @NotNull
     @Column(name = "id_kategori")
-    private String id_kategori;
+    private String idKategori;
     @NotNull
     @Column(name = "tanggal")
     private Date tanggal;
@@ -36,10 +34,10 @@ public class History {
     @Column(name = "finish")
     private Date finish;
 
-    public History(String id_history, String nip, String id_kategori, Date tanggal, Date start, Date finish ){
-        this.id_history = id_history;
+    public History(int idHistory, String nip, String idKategori, Date tanggal, Date start, Date finish) {
+        this.idHistory = idHistory;
         this.nip = nip;
-        this.id_kategori = id_kategori;
+        this.idKategori = idKategori;
         this.tanggal = tanggal;
         this.start = start;
         this.finish = finish;
@@ -50,3 +48,4 @@ public class History {
     }
 
 }
+
