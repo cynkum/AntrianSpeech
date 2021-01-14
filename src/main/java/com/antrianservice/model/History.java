@@ -27,20 +27,12 @@ public class History {
     @NotNull
     @Column(name = "tanggal")
     private Date tanggal;
-    @NotNull
-    @Column(name = "start")
-    private Date start;
-    @NotNull
-    @Column(name = "finish")
-    private Date finish;
 
-    public History(int idHistory, String nip, String idKategori, Date tanggal, Date start, Date finish) {
+    public History(int idHistory, String nip, String idKategori, Date tanggal) {
         this.idHistory = idHistory;
         this.nip = nip;
         this.idKategori = idKategori;
         this.tanggal = tanggal;
-        this.start = start;
-        this.finish = finish;
     }
 
     public History(){

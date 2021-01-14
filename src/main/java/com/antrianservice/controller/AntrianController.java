@@ -30,8 +30,6 @@ public class AntrianController {
         return postAntrianOutput;
     }
 
-
-
     @PutMapping("/antrian/{id-antrian}")
     public BaseResponse updateStatus(@PathVariable(value = "id-antrian") int idAntrian, @RequestBody PutAntrianRequest request){
         return antrianService.updateAntrian(idAntrian, request);
@@ -50,25 +48,19 @@ public class AntrianController {
 
     @GetMapping("/{id-kategori}/antrian")
     @ApiOperation(value = "Daftar nomor antrian")
-    public Long getNomorAntrian(String id_kategori){
-        return antrianService.getNomorAntrian(id_kategori);
+    public Long getNomorAntrian(@PathVariable(value = "id-kategori") String idKategori){
+        return antrianService.getNomorAntrian(idKategori);
     }
 
     @GetMapping("/antrian/{id-cabang}")
     @ApiOperation("Daftar Kategori Sesuai Cabang")
-    public GetKategoriListOutput getKategoriByIdCabang(String idCabang){
+    public GetKategoriListOutput getKategoriByIdCabang(@PathVariable(value = "id-cabang") String idCabang){
         return kategoriService.getKategoriByIdCabang(idCabang);
     }
 
-//    @GetMapping("/antrian/{id-kategori}")
-//    @ApiOperation(value = "Daftar semua antrian tanggal hari ini dan kategori yang dipilih")
-//    public GetAntrianListOutput getAntrianOrderByTanggalAntri(String idKategori){
-//        return antrianService.getAntrianOrderByTanggalAntri(idKategori);
-//    }
-
     @GetMapping("/antrian/{id-kategori}")
     @ApiOperation(value = "Daftar antrian sesuai kategori antrian")
-    public GetAntrianListOutput getAntrianbyKategori(String idKategori, boolean isToday){
+    public GetAntrianListOutput getAntrianbyKategori(@PathVariable(value = "id-kategori") String idKategori, boolean isToday){
         return antrianService.getAntrianByKategori(idKategori, isToday);
     }
     //------------------------------------------------------

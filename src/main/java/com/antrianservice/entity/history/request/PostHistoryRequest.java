@@ -13,7 +13,5 @@ public class PostHistoryRequest {
    private String nip;
    private String idKategori;
    private Date tanggal;
-   private Date start;
-   private Date finish;
 
 }

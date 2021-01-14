@@ -40,15 +40,10 @@ public class HistoryService {
             String nip = request.getNip();
             String idKategori = request.getIdKategori();
             Date tanggal = request.getTanggal();
-            Date start = request.getStart();
-            Date finish = request.getFinish();
 
             history.setNip(nip);
             history.setIdKategori(idKategori);
             history.setTanggal(tanggal);
-            history.setStart(start);
-            history.setFinish(finish);
-
             // add data to DB
             historyRepository.save(history);
 
@@ -85,8 +80,6 @@ public class HistoryService {
                 historyView.setNip(history.getNip());
                 historyView.setIdKategori(history.getIdKategori());
                 historyView.setTanggal(history.getTanggal());
-                historyView.setStart(history.getStart());
-                historyView.setFinish(history.getFinish());
                 historyViewList.add(historyView);
             }
             getHistoryListResponse.setHistoryList(historyViewList);
