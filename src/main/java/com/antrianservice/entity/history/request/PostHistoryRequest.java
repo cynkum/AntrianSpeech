@@ -13,5 +13,7 @@ public class PostHistoryRequest {
    private String nip;
    private String idKategori;
    private Date tanggal;
+   private String namaNasabah;
+   private String statusAntrian;
 
 }

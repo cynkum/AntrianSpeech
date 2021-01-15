@@ -21,6 +21,8 @@ public class GetHistoryListOutput {
         private String nip;
         private String idKategori;
         private Date tanggal;
+        private String namaNasabah;
+        private String statusAntrian;
     }
     @Data
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)

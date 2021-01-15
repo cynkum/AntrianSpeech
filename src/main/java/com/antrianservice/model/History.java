@@ -27,12 +27,20 @@ public class History {
     @NotNull
     @Column(name = "tanggal")
     private Date tanggal;
+    @NotNull
+    @Column(name = "nama_nasabah")
+    private String namaNasabah;
+    @NotNull
+    @Column(name = "status_antrian")
+    private String statusAntrian;
 
-    public History(int idHistory, String nip, String idKategori, Date tanggal) {
+    public History(int idHistory, String nip, String idKategori, Date tanggal, String namaNasabah, String statusAntrian) {
         this.idHistory = idHistory;
         this.nip = nip;
         this.idKategori = idKategori;
         this.tanggal = tanggal;
+        this.namaNasabah = namaNasabah;
+        this.statusAntrian = statusAntrian;
     }
 
     public History(){
