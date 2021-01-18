@@ -238,4 +238,13 @@ public class AntrianService {
         return response;
     }
 
+    public BaseResponse removeDataAntrian() {
+        BaseResponse response = new BaseResponse();
+        ErrorSchema errorSchema = new ErrorSchema();
+
+        antrianRepository.removeData();
+        errorSchema.setSuccessResponse();
+        response.setErrorSchema(errorSchema);
+        return response;
+    }
 }

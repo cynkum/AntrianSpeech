@@ -1,10 +1,12 @@
 package com.antrianservice.repository;
 
 import com.antrianservice.model.Antrian;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -19,5 +21,9 @@ public interface AntrianRepository extends CrudRepository<Antrian, Integer> {
     List<Antrian> findAntrianByTanggalAntri(String idKategori, String statusAntrian);
     @Query(value = "select count(*) from antrian where id_kategori=?1", nativeQuery = true)
     Long countKategori(String idKategori);
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM antrian WHERE DATE(tanggal_antri) = CURDATE()", nativeQuery = true)
+    void removeData();
 
 }

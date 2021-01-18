@@ -12,6 +12,7 @@ import com.antrianservice.service.AntrianService;
 import com.antrianservice.service.KategoriService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,11 @@ public class AntrianController {
     public GetAntrianListOutput getAntrianbyKategori(@PathVariable(value = "id-kategori") String idKategori, boolean isToday){
         return antrianService.getAntrianByKategori(idKategori, isToday);
     }
-    //------------------------------------------------------
+
+    @Scheduled(cron = "0 00 19 * * *")
+    public BaseResponse removeData() {
+        return antrianService.removeDataAntrian();
+    }
 
 
 }
