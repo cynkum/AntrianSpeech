@@ -17,4 +17,6 @@ public interface PegawaiRepository extends CrudRepository<Pegawai, String> {
     @Query(value = "select password from pegawai where username=?1", nativeQuery = true)
     String existsPegawaiByUsername(String username);
 
+    @Query(value = "select hak_akses from pegawai where username=?1", nativeQuery = true)
+    String hakAkses(String username);
 }

@@ -219,7 +219,6 @@ public class AntrianService {
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
         try{
-            
             if(!antrianRepository.existsById(idAntrian)){
                 throw new CustomArgsException("699.not_empty", "idKategori");
             }
@@ -242,7 +241,7 @@ public class AntrianService {
         BaseResponse response = new BaseResponse();
         ErrorSchema errorSchema = new ErrorSchema();
 
-        antrianRepository.removeData();
+        antrianRepository.removeData(); 
         errorSchema.setSuccessResponse();
         response.setErrorSchema(errorSchema);
         return response;

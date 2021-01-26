@@ -5,6 +5,7 @@ import com.antrianservice.entity.pegawai.request.PutPegawaiRequest;
 import com.antrianservice.entity.pegawai.response.GetUserInfo;
 import com.antrianservice.entity.pegawai.response.GetPegawaiListOutput;
 import com.antrianservice.entity.pegawai.request.LoginUserRequest;
+import com.antrianservice.entity.pegawai.response.PostLoginOutput;
 import com.antrianservice.response.BaseResponse;
 import com.antrianservice.service.PegawaiService;
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +49,7 @@ public class PegawaiController {
     }
 
     @PostMapping("/pegawai/login")
-    public BaseResponse loginUser(@RequestBody LoginUserRequest request){
+    public PostLoginOutput loginUser(@RequestBody LoginUserRequest request){
         return pegawaiService.loginUser(request);
     }
 

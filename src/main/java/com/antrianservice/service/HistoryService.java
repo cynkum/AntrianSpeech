@@ -14,7 +14,9 @@ import com.antrianservice.util.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -34,18 +36,20 @@ public class HistoryService {
         ErrorSchema errorSchema = new ErrorSchema();
         History history = new History();
         try {
-            if(!antrianRepository.existsById(request.getIdAntrian())){
-                throw new CustomArgsException("699.not_valid", "idAntrian");
-            }
+//            if(!antrianRepository.existsById(request.getIdAntrian())){
+//                throw new CustomArgsException("699.not_valid", "idAntrian");
+//            }
             String nip = request.getNip();
-            String idKategori = request.getIdKategori();
-            Date tanggal = request.getTanggal();
+            //String idKategori = request.getIdKategori();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            String strDate = sdf.format(cal.getTime());
             String namaNasabah = request.getNamaNasabah();
             String statusAntrian = request.getStatusAntrian();
 
             history.setNip(nip);
-            history.setIdKategori(idKategori);
-            history.setTanggal(tanggal);
+            history.setIdKategori("1");
+            history.setTanggal(sdf.parse(strDate));
             history.setNamaNasabah(namaNasabah);
             history.setStatusAntrian(statusAntrian);
             // add data to DB

@@ -4,6 +4,8 @@ import com.antrianservice.entity.pegawai.request.PostPegawaiRequest;
 import com.antrianservice.entity.pegawai.request.PutPegawaiRequest;
 import com.antrianservice.entity.pegawai.response.GetUserInfo;
 import com.antrianservice.entity.pegawai.request.LoginUserRequest;
+import com.antrianservice.entity.pegawai.response.PostLoginOutput;
+import com.antrianservice.entity.pegawai.response.PostLoginResponse;
 import com.antrianservice.model.Pegawai;
 import com.antrianservice.exception.CommonException;
 import com.antrianservice.exception.CustomArgsException;
@@ -244,11 +246,13 @@ public class PegawaiService {
         return response;
     }
 
-    public BaseResponse loginUser(LoginUserRequest request){
+    public PostLoginOutput loginUser(LoginUserRequest request){
         String password = pegawaiRepository.existsPegawaiByUsername(request.getUsername());
         Pegawai pegawai = pegawaiRepository.findByUsername(request.getUsername());
-        BaseResponse response = new BaseResponse();
+        PostLoginOutput output = new PostLoginOutput();
         ErrorSchema errorSchema = new ErrorSchema();
+        PostLoginResponse postLoginResponse = new PostLoginResponse();
+        String hakAkses = pegawaiRepository.hakAkses(request.getUsername());
         try {
             if (pegawaiRepository.existsPegawaiByUsername(request.getUsername())==null) {
                 throw new CustomArgsException("699.not_valid", "username");
@@ -261,15 +265,18 @@ public class PegawaiService {
             if (!password.equals(passMd)) {
                 throw new CustomArgsException("699.not_valid", "password");
             }
+            postLoginResponse.setUsername(request.getUsername());
+            postLoginResponse.setHakAkses(hakAkses);
             errorSchema.setSuccessResponse();
-            response.setErrorSchema(errorSchema);
+            output.setErrorSchema(errorSchema);
+            output.setPostLoginResponse(postLoginResponse);
 
         }catch (CommonException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             errorSchema.setResponse(messageUtils.setResponseCustomException((CommonException)e));
-            response.setErrorSchema(errorSchema);
+            output.setErrorSchema(errorSchema);
         }
-        return response;
+        return output;
     }
 
     public BaseResponse deletePegawai(String nip){

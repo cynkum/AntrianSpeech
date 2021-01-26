@@ -65,10 +65,8 @@ public class AntrianController {
         return antrianService.getAntrianByKategori(idKategori, isToday);
     }
 
-    @Scheduled(cron = "0 00 19 * * *")
+    @Scheduled(cron = "0 18 14 * * *")
     public BaseResponse removeData() {
         return antrianService.removeDataAntrian();
     }
-
-
 }
